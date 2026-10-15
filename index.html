@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chess</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%99%9E%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="board-wrap">
+        <div id="board" class="board" role="grid" aria-label="Chess board"></div>
+      </section>
+      <aside class="side">
+        <h1>Chess</h1>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <div class="controls">
+          <button id="new-game" type="button">New game</button>
+          <button id="undo" type="button">Undo</button>
+          <button id="flip" type="button">Flip board</button>
+        </div>
+        <ol id="moves" class="moves" aria-label="Move list"></ol>
+      </aside>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

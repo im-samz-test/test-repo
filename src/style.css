@@ -1,0 +1,152 @@
+:root {
+  --light: #f0d9b5;
+  --dark: #b58863;
+  --select: #f6f669;
+  --last: rgba(205, 210, 106, 0.75);
+  --check: #ff5a4f;
+  --dot: rgba(20, 85, 30, 0.45);
+  --bg: #2b2a28;
+  --panel: #383633;
+  --text: #ecebe8;
+  --square: min(11vw, 72px);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+.app {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 16px;
+}
+.board-wrap { position: relative; }
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, var(--square));
+  grid-template-rows: repeat(8, var(--square));
+  border: 4px solid var(--panel);
+  border-radius: 4px;
+  user-select: none;
+  touch-action: none;
+}
+.sq {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--square) * 0.78);
+  line-height: 1;
+  cursor: default;
+}
+.sq.light { background: var(--light); }
+.sq.dark { background: var(--dark); }
+.sq.last::before, .sq.selected::before, .sq.in-check::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.sq.last::before { background: var(--last); }
+.sq.selected::before { background: var(--select); opacity: 0.8; }
+.sq.in-check::before { background: radial-gradient(circle, var(--check) 25%, transparent 75%); }
+.sq.target::after {
+  content: '';
+  position: absolute;
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: var(--dot);
+}
+.sq.target.capture::after {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background: radial-gradient(circle, transparent 58%, var(--dot) 60%);
+}
+.piece {
+  position: relative;
+  z-index: 1;
+  cursor: grab;
+  font-family: 'Segoe UI Symbol', 'Noto Sans Symbols 2', 'DejaVu Sans', 'Apple Symbols', sans-serif;
+}
+.piece.w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000, 0 0 3px #000, 0 1px 1px #000; }
+.piece.b { color: #111; text-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }
+.piece.dragging { opacity: 0.35; }
+.drag-ghost {
+  position: fixed;
+  z-index: 100;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  font-size: calc(var(--square) * 0.95);
+  line-height: 1;
+}
+.coord { position: absolute; font-size: 11px; font-weight: 600; pointer-events: none; z-index: 2; }
+.coord.f { right: 3px; bottom: 1px; }
+.coord.r { left: 3px; top: 1px; }
+.sq.light .coord { color: var(--dark); }
+.sq.dark .coord { color: var(--light); }
+
+.side {
+  width: min(100%, 320px);
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 16px;
+}
+.side h1 { margin: 0 0 8px; font-size: 1.4rem; }
+.status { min-height: 2.6em; margin: 0 0 12px; font-weight: 600; }
+.status.over { color: #ffd479; }
+.status.check { color: #ff9b94; }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+button {
+  background: #4d4a46;
+  color: var(--text);
+  border: 1px solid #66625c;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: #5d5a55; }
+button:disabled { opacity: 0.45; cursor: default; }
+.moves {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 340px;
+  overflow-y: auto;
+  font-variant-numeric: tabular-nums;
+}
+.moves li { display: grid; grid-template-columns: 2.5em 1fr 1fr; padding: 3px 4px; border-radius: 4px; }
+.moves li:nth-child(odd) { background: rgba(255, 255, 255, 0.04); }
+.moves .num { color: #9d9a94; }
+.moves .cur { font-weight: 700; color: #ffd479; }
+
+.promo {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+.promo-choices { display: flex; gap: 6px; background: var(--panel); padding: 10px; border-radius: 8px; }
+.promo-choices button {
+  width: var(--square);
+  height: var(--square);
+  padding: 0;
+  font-size: calc(var(--square) * 0.7);
+  background: var(--light);
+  border: 2px solid var(--dark);
+  color: #111;
+  font-family: 'Segoe UI Symbol', 'Noto Sans Symbols 2', 'DejaVu Sans', sans-serif;
+}
+.promo-choices button.w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000, 0 0 3px #000; }
+.promo-choices button:hover { background: #fff3d6 !important; }
